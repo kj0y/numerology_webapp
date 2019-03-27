@@ -47,19 +47,42 @@ def get_message(birthday_number)
     end
 end
 
-get '/' do
-    "Hello World"
-end
-
-get '/:birthdate' do
+def setup_index_view
   birthdate = params[:birthdate]
   birthday_number = calc_birthpath_num(birthdate)
   @message = "Your numerology number is #{birthday_number}. " + get_message(birthday_number)
   erb :index
 end
 
+get '/' do
+  erb :form
+end
+
+get '/form' do
+  erb :form
+end
+
 get '/newpage' do
-  # contents of new newpage
-  @message = "This is a test."
   erb :newpage
 end
+
+get '/message/:birthday_number' do
+    birthday_number = params[:birthday_number].to_i
+    @message = "Your numerology number is #{birthday_number}. " + get_message(birthday_number)
+    erb :index
+end
+
+post '/' do
+  birthdate = params[:birthdate].gsub("-","")
+  birthday_number = calc_birthpath_num(birthdate)
+  redirect "/message/#{birthday_number}"
+end
+
+
+get '/:birthdate' do
+  setup_index_view()
+end
+
+
+
+
