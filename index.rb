@@ -54,16 +54,16 @@ def setup_index_view
   erb :index
 end
 
-get '/' do
-  erb :form
-end
-
 get '/form' do
   erb :form
 end
 
 get '/newpage' do
   erb :newpage
+end
+
+get '/' do
+  erb :form
 end
 
 get '/message/:birthday_number' do
@@ -77,7 +77,6 @@ post '/' do
   birthday_number = calc_birthpath_num(birthdate)
   redirect "/message/#{birthday_number}"
 end
-
 
 get '/:birthdate' do
   setup_index_view()
