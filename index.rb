@@ -47,6 +47,15 @@ def get_message(birthday_number)
     end
 end
 
+#Validate user input of birthdate
+def valid_birthdate(input)
+  if input.length == 8 && input.match(/^[0-9]+[0-9]$/)
+    return true
+  else
+    return false
+  end
+end
+
 def setup_index_view
   birthdate = params[:birthdate]
   birthday_number = calc_birthpath_num(birthdate)
@@ -74,8 +83,14 @@ end
 
 post '/' do
   birthdate = params[:birthdate].gsub("-","")
-  birthday_number = calc_birthpath_num(birthdate)
-  redirect "/message/#{birthday_number}"
+  if valid_birthdate(birthdate)
+    birthday_number = calc_birthpath_num(birthdate)
+    redirect "/message/#{birthday_number}"
+  else
+    erb :form
+    @error = "Sorry, your input wasn't valid. Try again!"
+    erb @error
+  end
 end
 
 get '/:birthdate' do
